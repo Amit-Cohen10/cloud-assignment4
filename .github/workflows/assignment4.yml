@@ -110,11 +110,11 @@ jobs:
           docker load -i pet-store-image.tar
           docker load -i pet-order-image.tar
       
-      - name: Start containers with docker-compose
+      - name: Start containers with docker compose
         id: start_containers
         continue-on-error: true
         run: |
-          docker-compose up -d
+          docker compose up -d
           sleep 15
       
       - name: Check container status
@@ -222,7 +222,7 @@ jobs:
       - name: Stop containers
         if: always()
         run: |
-          docker-compose down || true
+          docker compose down || true
       
       - name: Upload test results
         if: always()
@@ -267,9 +267,9 @@ jobs:
           docker load -i pet-store-image.tar
           docker load -i pet-order-image.tar
       
-      - name: Start containers with docker-compose
+      - name: Start containers with docker compose
         run: |
-          docker-compose up -d
+          docker compose up -d
           sleep 15
       
       - name: Wait for services to be ready
@@ -428,7 +428,7 @@ jobs:
       - name: Stop containers
         if: always()
         run: |
-          docker-compose down || true
+          docker compose down || true
       
       - name: Upload response.txt
         uses: actions/upload-artifact@v4
