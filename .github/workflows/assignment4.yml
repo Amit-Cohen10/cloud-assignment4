@@ -27,36 +27,57 @@ jobs:
         run: |
           docker build -t pet-store:latest ./pet-store
       
+      - name: Log and fail if pet-store build failed
+        if: steps.build_pet_store.outcome != 'success'
+        run: |
+          echo "image pet-store not able to be built;" >> log.txt
+          echo "PET_STORE_FAILED=true" >> $GITHUB_ENV
+      
+      - name: Upload log and fail if pet-store failed
+        if: steps.build_pet_store.outcome != 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: log-build
+          path: log.txt
+          retention-days: 1
+      
+      - name: Exit if pet-store failed
+        if: steps.build_pet_store.outcome != 'success'
+        run: exit 1
+      
       - name: Build pet-order image
         id: build_pet_order
         continue-on-error: true
         run: |
           docker build -t pet-order:latest ./pet-order
       
-      - name: Update log with build results
+      - name: Log and fail if pet-order build failed
+        if: steps.build_pet_order.outcome != 'success'
         run: |
-          # Line 3: Build status for both images on one line
-          LINE3=""
-          if [ "${{ steps.build_pet_store.outcome }}" == "success" ]; then
-            LINE3="image pet-store successfully built;"
-          else
-            LINE3="image pet-store not able to be built;"
-          fi
-          if [ "${{ steps.build_pet_order.outcome }}" == "success" ]; then
-            LINE3="${LINE3}image pet-order successfully built;"
-          else
-            LINE3="${LINE3}image pet-order not able to be built;"
-          fi
-          echo "$LINE3" >> log.txt
+          echo "image pet-store successfully built;image pet-order not able to be built;" >> log.txt
+      
+      - name: Upload log and fail if pet-order failed
+        if: steps.build_pet_order.outcome != 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: log-build
+          path: log.txt
+          retention-days: 1
+      
+      - name: Exit if pet-order failed
+        if: steps.build_pet_order.outcome != 'success'
+        run: exit 1
+      
+      - name: Log successful builds
+        run: |
+          echo "image pet-store successfully built;image pet-order successfully built;" >> log.txt
       
       - name: Save Docker images
-        if: steps.build_pet_store.outcome == 'success' && steps.build_pet_order.outcome == 'success'
         run: |
           docker save pet-store:latest -o pet-store-image.tar
           docker save pet-order:latest -o pet-order-image.tar
       
       - name: Upload pet-store image artifact
-        if: steps.build_pet_store.outcome == 'success' && steps.build_pet_order.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: pet-store-image
@@ -64,7 +85,6 @@ jobs:
           retention-days: 1
       
       - name: Upload pet-order image artifact
-        if: steps.build_pet_store.outcome == 'success' && steps.build_pet_order.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: pet-order-image
@@ -77,10 +97,6 @@ jobs:
           name: log-build
           path: log.txt
           retention-days: 1
-      
-      - name: Fail if builds failed
-        if: steps.build_pet_store.outcome != 'success' || steps.build_pet_order.outcome != 'success'
-        run: exit 1
 
   test:
     runs-on: ubuntu-latest
