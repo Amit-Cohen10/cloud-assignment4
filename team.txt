@@ -1,3 +1,12 @@
+Assignment 4 - CI/CD Pipeline
+==============================
+
 Team Members:
-Amit Cohen
-Alma Tamir
+- Amit Cohen
+- Alma Tamir
+
+GitHub Repository:
+https://github.com/Amit-Cohen10/cloud-assignment4
+
+Collaborator Added:
+NirItaCohen (tester)
