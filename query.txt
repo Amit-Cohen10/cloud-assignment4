@@ -1,5 +1,11 @@
 query: 1,type=Golden Retriever;
 query: 2,family=Canidae;
+query: 1,genus=Canis;
+query: 2,lifespan=15;
+query: 1,hasAttribute=Loyal;
+query: 2,type=bulldog;
 purchase: {"purchaser": "John Doe", "pet-type": "Golden Retriever"};
-query: 1,lifespan=12;
 purchase: {"purchaser": "Jane Smith", "pet-type": "bulldog", "store": 2};
+purchase: {"purchaser": "Bob", "pet-type": "Australian Shepherd", "store": 1};
+query: 1,family=Felidae;
+query: 2,type=Australian Shepherd;
