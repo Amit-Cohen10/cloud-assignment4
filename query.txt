@@ -1,0 +1,5 @@
+query: 1,type=Golden Retriever;
+query: 2,family=Canidae;
+purchase: {"purchaser": "John Doe", "pet-type": "Golden Retriever"};
+query: 1,lifespan=12;
+purchase: {"purchaser": "Jane Smith", "pet-type": "bulldog", "store": 2};
