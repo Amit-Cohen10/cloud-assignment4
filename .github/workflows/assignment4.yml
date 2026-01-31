@@ -82,7 +82,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: log-file
+          name: log-build
           path: log.txt
           retention-days: 1
 
@@ -97,7 +97,7 @@ jobs:
       - name: Download log from build job
         uses: actions/download-artifact@v4
         with:
-          name: log-file
+          name: log-build
       
       - name: Download pet-store image
         uses: actions/download-artifact@v4
@@ -240,7 +240,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: log-file
+          name: log-final
           path: log.txt
           retention-days: 5
       
