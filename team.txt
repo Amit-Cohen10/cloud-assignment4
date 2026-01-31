@@ -9,4 +9,4 @@ GitHub Repository:
 https://github.com/Amit-Cohen10/cloud-assignment4
 
 Collaborator Added:
-NirItaCohen (tester)
+NirItaCohen

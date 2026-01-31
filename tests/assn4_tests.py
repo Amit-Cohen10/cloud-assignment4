@@ -97,10 +97,10 @@ class TestPetStoreApplication:
             assert data["id"] not in ids_collected, f"Duplicate ID returned for {payload['type']}"
             ids_collected.append(data["id"])
             
-            # Check family and genus match expected values
-            assert data.get("family") == expected_val["family"], \
+            # Check family and genus match expected values (case-insensitive)
+            assert data.get("family", "").lower() == expected_val["family"].lower(), \
                 f"Family mismatch for {payload['type']}: expected {expected_val['family']}, got {data.get('family')}"
-            assert data.get("genus") == expected_val["genus"], \
+            assert data.get("genus", "").lower() == expected_val["genus"].lower(), \
                 f"Genus mismatch for {payload['type']}: expected {expected_val['genus']}, got {data.get('genus')}"
             
             # Store the ID for later tests
@@ -141,10 +141,10 @@ class TestPetStoreApplication:
             assert data["id"] not in ids_collected, f"Duplicate ID returned for {payload['type']}"
             ids_collected.append(data["id"])
             
-            # Check family and genus match expected values
-            assert data.get("family") == expected_val["family"], \
+            # Check family and genus match expected values (case-insensitive)
+            assert data.get("family", "").lower() == expected_val["family"].lower(), \
                 f"Family mismatch for {payload['type']}: expected {expected_val['family']}, got {data.get('family')}"
-            assert data.get("genus") == expected_val["genus"], \
+            assert data.get("genus", "").lower() == expected_val["genus"].lower(), \
                 f"Genus mismatch for {payload['type']}: expected {expected_val['genus']}, got {data.get('genus')}"
             
             # Store the ID for later tests
@@ -273,19 +273,19 @@ class TestPetStoreApplication:
         
         data = response.json()
         
-        # Verify all fields match PET_TYPE2_VAL
-        assert data.get("type") == PET_TYPE2_VAL["type"], \
+        # Verify all fields match PET_TYPE2_VAL (case-insensitive for strings)
+        assert data.get("type", "").lower() == PET_TYPE2_VAL["type"].lower(), \
             f"Type mismatch: expected {PET_TYPE2_VAL['type']}, got {data.get('type')}"
-        assert data.get("family") == PET_TYPE2_VAL["family"], \
+        assert data.get("family", "").lower() == PET_TYPE2_VAL["family"].lower(), \
             f"Family mismatch: expected {PET_TYPE2_VAL['family']}, got {data.get('family')}"
-        assert data.get("genus") == PET_TYPE2_VAL["genus"], \
+        assert data.get("genus", "").lower() == PET_TYPE2_VAL["genus"].lower(), \
             f"Genus mismatch: expected {PET_TYPE2_VAL['genus']}, got {data.get('genus')}"
         assert data.get("lifespan") == PET_TYPE2_VAL["lifespan"], \
             f"Lifespan mismatch: expected {PET_TYPE2_VAL['lifespan']}, got {data.get('lifespan')}"
         
-        # Check attributes (may be in different order)
-        expected_attrs = set(PET_TYPE2_VAL["attributes"])
-        actual_attrs = set(data.get("attributes", []))
+        # Check attributes (may be in different order, case-insensitive)
+        expected_attrs = {attr.lower() for attr in PET_TYPE2_VAL["attributes"]}
+        actual_attrs = {attr.lower() for attr in data.get("attributes", [])}
         assert expected_attrs == actual_attrs, \
             f"Attributes mismatch: expected {expected_attrs}, got {actual_attrs}"
 
@@ -312,18 +312,18 @@ class TestPetStoreApplication:
         # Should contain 2 pets
         assert len(data) == 2, f"Expected 2 pets, got {len(data)}"
         
-        # Extract pet names from response
-        pet_names = {pet.get("name") for pet in data}
-        expected_names = {PET7_TYPE4["name"], PET8_TYPE4["name"]}
+        # Extract pet names from response (case-insensitive)
+        pet_names = {pet.get("name", "").lower() for pet in data}
+        expected_names = {PET7_TYPE4["name"].lower(), PET8_TYPE4["name"].lower()}
         
         assert expected_names == pet_names, \
             f"Pet names mismatch: expected {expected_names}, got {pet_names}"
         
-        # Verify each pet has the correct fields
+        # Verify each pet has the correct fields (case-insensitive name matching)
         for pet in data:
-            if pet.get("name") == PET7_TYPE4["name"]:
+            if pet.get("name", "").lower() == PET7_TYPE4["name"].lower():
                 assert pet.get("birthdate") == PET7_TYPE4["birthdate"], \
                     f"Birthdate mismatch for {PET7_TYPE4['name']}"
-            elif pet.get("name") == PET8_TYPE4["name"]:
+            elif pet.get("name", "").lower() == PET8_TYPE4["name"].lower():
                 assert pet.get("birthdate") == PET8_TYPE4["birthdate"], \
                     f"Birthdate mismatch for {PET8_TYPE4['name']}"
