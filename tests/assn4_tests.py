@@ -46,13 +46,13 @@ PET_TYPE4_VAL = {
     "lifespan": None
 }
 
-# Pet payloads
+# Pet payloads (EXACTLY as shown in official assignment slides)
 PET1_TYPE1 = {"name": "Lander", "birthdate": "14-05-2020"}
-PET2_TYPE1 = {"name": "Lanky"}
+PET2_TYPE1 = {"name": "Lanky"}  # No birthdate in slides
 PET3_TYPE1 = {"name": "Shelly", "birthdate": "07-07-2019"}
 PET4_TYPE2 = {"name": "Felicity", "birthdate": "27-11-2011"}
-PET5_TYPE3 = {"name": "Muscles"}
-PET6_TYPE3 = {"name": "Junior"}
+PET5_TYPE3 = {"name": "Muscles"}  # No birthdate in slides
+PET6_TYPE3 = {"name": "Junior"}  # No birthdate in slides
 PET7_TYPE4 = {"name": "Lazy", "birthdate": "07-08-2018"}
 PET8_TYPE4 = {"name": "Lemon", "birthdate": "27-03-2020"}
 
