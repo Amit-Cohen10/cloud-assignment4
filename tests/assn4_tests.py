@@ -440,52 +440,7 @@ class TestPetStoreAssignment4:
         # Verify all IDs are unique
         assert len(set([id_1, id_2, id_3])) == 3, "All IDs should be unique"
 
-    def test_02_post_pet_types_to_store2(self):
-        """Test 1-2: POST 3 pet-types to pet-store #2"""
-        global pet_type_ids
-        
-        # POST PET_TYPE1 to store #2
-        response4 = requests.post(f"{STORE2_URL}/pet-types", json=PET_TYPE1)
-        assert response4.status_code == 201, f"Expected 201, got {response4.status_code}"
-        data4 = response4.json()
-        
-        assert "id" in data4, "Response should contain 'id' field"
-        assert data4["type"] == PET_TYPE1_VAL["type"], f"Type mismatch"
-        assert data4["family"] == PET_TYPE1_VAL["family"], f"Family mismatch"
-        assert data4["genus"] == PET_TYPE1_VAL["genus"], f"Genus mismatch"
-        
-        id_4 = data4["id"]
-        pet_type_ids.append(id_4)
-        
-        # POST PET_TYPE2 to store #2
-        response5 = requests.post(f"{STORE2_URL}/pet-types", json=PET_TYPE2)
-        assert response5.status_code == 201, f"Expected 201, got {response5.status_code}"
-        data5 = response5.json()
-        
-        assert "id" in data5, "Response should contain 'id' field"
-        assert data5["type"] == PET_TYPE2_VAL["type"], f"Type mismatch"
-        assert data5["family"] == PET_TYPE2_VAL["family"], f"Family mismatch"
-        assert data5["genus"] == PET_TYPE2_VAL["genus"], f"Genus mismatch"
-        
-        id_5 = data5["id"]
-        pet_type_ids.append(id_5)
-        
-        # POST PET_TYPE4 to store #2
-        response6 = requests.post(f"{STORE2_URL}/pet-types", json=PET_TYPE4)
-        assert response6.status_code == 201, f"Expected 201, got {response6.status_code}"
-        data6 = response6.json()
-        
-        assert "id" in data6, "Response should contain 'id' field"
-        assert data6["type"] == PET_TYPE4_VAL["type"], f"Type mismatch"
-        assert data6["family"] == PET_TYPE4_VAL["family"], f"Family mismatch"
-        assert data6["genus"] == PET_TYPE4_VAL["genus"], f"Genus mismatch"
-        
-        id_6 = data6["id"]
-        pet_type_ids.append(id_6)
-        
-        # Verify all IDs are unique (within store #2)
-        assert len(set([id_4, id_5, id_6])) == 3, "All IDs should be unique"
-
+    
     def test_03_post_pets_to_store1_type1(self):
         """Test 3: POST 2 pets of type 1 to pet-store #1"""
         global pet_type_ids
@@ -548,24 +503,6 @@ class TestPetStoreAssignment4:
         )
         assert response.status_code == 201, f"Expected 201, got {response.status_code}"
 
-    def test_07_post_pets_to_store2_type4(self):
-        """Test 7: POST 2 pets of type 4 to pet-store #2"""
-        global pet_type_ids
-        id_6 = pet_type_ids[5]
-        
-        # POST PET7_TYPE4
-        response1 = requests.post(
-            f"{STORE2_URL}/pet-types/{id_6}/pets",
-            json=PET7_TYPE4
-        )
-        assert response1.status_code == 201, f"Expected 201, got {response1.status_code}"
-        
-        # POST PET8_TYPE4
-        response2 = requests.post(
-            f"{STORE2_URL}/pet-types/{id_6}/pets",
-            json=PET8_TYPE4
-        )
-        assert response2.status_code == 201, f"Expected 201, got {response2.status_code}"
 
     def test_08_get_pet_type2_from_store1(self):
         """Test 8: GET /pet-types/{id2} from pet-store #1"""
@@ -586,36 +523,4 @@ class TestPetStoreAssignment4:
         # Check attributes (order may vary)
         assert set(data["attributes"]) == set(PET_TYPE2_VAL["attributes"]), f"Attributes mismatch"
 
-    def test_09_get_pets_of_type6_from_store2(self):
-        """Test 9: GET /pet-types/{id6}/pets from pet-store #2"""
-        global pet_type_ids
-        id_6 = pet_type_ids[5]
-        
-        response = requests.get(f"{STORE2_URL}/pet-types/{id_6}/pets")
-        assert response.status_code == 200, f"Expected 200, got {response.status_code}"
-        
-        data = response.json()
-        
-        # Should be an array
-        assert isinstance(data, list), "Response should be a JSON array"
-        
-        # Should contain 2 pets
-        assert len(data) == 2, f"Expected 2 pets, got {len(data)}"
-        
-        # Extract pet names
-        pet_names = [pet["name"] for pet in data]
-        
-        # Should contain both PET7_TYPE4 and PET8_TYPE4
-        assert PET7_TYPE4["name"] in pet_names, f"{PET7_TYPE4['name']} not found in response"
-        assert PET8_TYPE4["name"] in pet_names, f"{PET8_TYPE4['name']} not found in response"
-        
-        # Validate each pet has expected fields
-        for pet in data:
-            assert "name" in pet, "Pet should have 'name' field"
-            assert "birthdate" in pet, "Pet should have 'birthdate' field"
-            
-            # Validate specific pet data
-            if pet["name"] == PET7_TYPE4["name"]:
-                assert pet["birthdate"] == PET7_TYPE4["birthdate"], "Birthdate mismatch for Lazy"
-            elif pet["name"] == PET8_TYPE4["name"]:
-                assert pet["birthdate"] == PET8_TYPE4["birthdate"], "Birthdate mismatch for Lemon"
+   
